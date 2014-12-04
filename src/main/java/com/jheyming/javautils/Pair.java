@@ -1,9 +1,9 @@
 package com.jheyming.javautils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
@@ -89,5 +89,14 @@ public class Pair<LEFT, Right> {
 			throw new ClassCastException("All right pairs must match the same type: " + bKlass.getSimpleName());
 		}
 		return pairs;
+	}
+	
+	public static <A,B> Object[] flatten(List<Pair<A,B>> pairs) {
+		List<Object> list = new ArrayList<>();
+		for(Pair<A,B> pair : pairs) {
+			list.add(pair.left);
+			list.add(pair.right);
+		}
+		return list.toArray();
 	}
 }

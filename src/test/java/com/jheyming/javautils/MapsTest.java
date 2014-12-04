@@ -1,5 +1,6 @@
 package com.jheyming.javautils;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -61,6 +62,39 @@ public class MapsTest extends TestCase {
 		
 		map = Maps.asMap(String.class, Integer.class, "foo", 1, "bar", 2);
 		System.out.println(map);
+	}
+	
+	private Map<String,Object> argsOverride(Object... args) {
+		return Maps.mergeDefaults(args, "something", "else");
+	}
+	
+	@Test
+	public void test_override() {
+		
+		Map<String,Object> map = argsOverride("foo","bar","baz", 1);
+		assertEquals(3, map.size());
+		assertTrue(map.containsKey("something"));
+		assertEquals("else", map.get("something"));
+		assertEquals("bar", map.get("foo"));
+		
+		map = argsOverride("something", "mine");
+		assertEquals(1, map.size());
+		assertTrue(map.containsKey("something"));
+		assertEquals("mine", map.get("something"));
+	}
+	
+	@Test
+	public void test_flatten() {
+		Map<String,Object> map = argsOverride("foo","bar","baz", "bazzy");
+		Object[] flattened = Maps.flatten(map);
+		
+		assertEquals(6, flattened.length);
+		
+		Map<String,Object> map2 = Maps.asMap(flattened);
+		assertEquals(map, map2);
+		
+		Arrays.sort(flattened);
+		assertEquals(Arrays.asList("bar","baz","bazzy","else","foo","something"), Arrays.asList(flattened));
 	}
 
 }

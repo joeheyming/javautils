@@ -56,15 +56,15 @@ public class Maps {
       }
       return list.toArray();
   }
-  
-  public static <KEY,VALUE> Map<KEY,VALUE> merge(Object[] override, Object... map) {
-    Map<KEY,VALUE> toMerge = asMap(map);
+
+  public static <KEY,VALUE> Map<KEY,VALUE> mergeDefaults(Object[] override, Object... defaults) {
+    Map<KEY,VALUE> toMerge = asMap(defaults);
     Map<KEY,VALUE> toOverride = asMap(override);
     toMerge.putAll(toOverride);
     return toMerge;
   }
   
   public static Object[] mergeList(Object[] override, Object... map) {
-    return flatten(merge(override, map));
+    return flatten(mergeDefaults(override, map));
   }
 }
